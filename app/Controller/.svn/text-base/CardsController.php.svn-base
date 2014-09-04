@@ -1,9 +1,0 @@
-<?php
-class CardsController extends AppController {
-	public $helpers = array('Html','Form');
-
-	public function index() {
-		$this->set('cards',$this->Card->find('all'));
-	}
-}
-?>

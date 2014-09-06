@@ -24,6 +24,6 @@
 <body>
 	<?php echo $this->fetch('content'); ?>
 
-	<p><i><a href="www.humboldtschule-berlin.de/cafeteria">Cafeteria-Plan</a></i></p>
+	<p><i><a href="www.humboldtschule-berlin.de/cafeplaner">Cafeteria-Plan</a></i></p>
 </body>
 </html>

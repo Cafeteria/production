@@ -532,7 +532,7 @@ return false;
 					dateObj.setDate(dateObj.getDate()+7);
 					var tmpDate = new Date(formatDate);
 					
-					if (tmpDate.toDateString() != (new Date()).toDateString() && tmpDate.getTime() <= dateObj.getTime()) {
+					if (tmpDate.toDateString() != (new Date()).toDateString() && tmpDate.getTime() <= dateObj.getTime() && ! $("#" + cellID).hasClass("tdnonobligatedbyuser")) {
 						$("#sevenDayWarning").show();
 					}
 					$("#methodAnchor").html("Austragen");

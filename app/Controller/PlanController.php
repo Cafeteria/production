@@ -486,11 +486,15 @@ class PlanController extends AppController {
 				if (strtotime($date)-time()-7*DAY < 0  && strtotime($date)-strtotime(date("Y-m-d")) > 0){
 					$tmpCols = $this->Column->find('all', array('recursive' => -1, 'conditions' => array('obligated' => 1, 'type' => 2), 'order' => array('order' => 'ASC')));
 					$i = 1;
+					$columnIsObligated = false;
 					foreach ($tmpCols as $tmpCol) {
-						if ($tmpCol['Column']['id'] == $columnid) break;
+						if ($tmpCol['Column']['id'] == $columnid) {
+							$columnIsObligated = true;
+							break;
+						}
 						$i++;
 					}
-					$this->sendEmergencyMail($date, $halfshift, $aColumnsUser['ColumnsUser']['user_id'], ($halfshift == 1) ? " Frühschicht ".$column['Column']['name'] : " Spätschicht ".$i);
+					if ($columnIsObligated) $this->sendEmergencyMail($date, $halfshift, $aColumnsUser['ColumnsUser']['user_id'], ($halfshift == 1) ? " Frühschicht ".$column['Column']['name'] : " Spätschicht ".$i);
 				}//&& date("Y-m-d", strtotime($date)) != date("Y-m-d", strotime(date("Y-m-d")))
 				
 				//Abbruch, da Aufgabe erledigt ist

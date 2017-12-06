@@ -24,7 +24,7 @@ class LoginController extends AppController {
 			if ($this->Auth->login()) {
 				if ($this->Auth->user('leave_date') != null) {
 					//Der Benutzeraccount wurde deaktiviert
-					$this->Session->setFlash('Ihre Logindaten sind zwar korrekt, allerdings wurde Ihr Zugang deaktiviert.<br/>Sollten Sie wieder in der Cafeteria arbeiten wollen, wenden Sie sich bitte an das <a href="mailto:humboldt-cafeteria@versanet.de">Cafeteria-Team</a>.','alert-box',array('class' => 'alert alert-block'));
+					$this->Session->setFlash('Ihre Logindaten sind zwar korrekt, allerdings wurde Ihr Zugang deaktiviert.<br/>Sollten Sie wieder in der Cafeteria arbeiten wollen, wenden Sie sich bitte an das <a href="mailto:cafeteria-humboldtschule@web.de">Cafeteria-Team</a>.','alert-box',array('class' => 'alert alert-block'));
 					$this->logout(false);
 				}
 				

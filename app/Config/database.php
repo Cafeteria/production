@@ -64,21 +64,20 @@ class DATABASE_CONFIG {
 	public $default = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
- 		'host' => 'localhost',
-//		'host' => 'nations.no-ip.org',
-		'port' => '/run/mysqld/mysqld.sock',
-		'login' => 'cafeteria',
-		'password' => 'apfelkuchen1',
-// 		'password' => 'apfelkuchen0',
-// 		'database' => 'cafeteria_geschlossen',
-		'database' => 'cafeteria_dev',
-// 		'database' => 'cafeteria_test',
-//		'unix_socket' => 'localhost:/run/mysqld/mysqld.sock',
+// 		'host' => 'localhost:/home/bk1000/mysql/mysql.sock',
+//		'host' => 'localhost',
+//		'host' => 'www5.shuttle.de:5539',
+		'host' => '127.0.0.1',
+		'port' => 5539,
+		'login' => 'cafeplaner',
+		'password' => 'jGmP8pFq6LBsVyt8',
+		'database' => 'cafeplaner',
 		'prefix' => '',
+//		'unix_socket' => '/home/bk1000/mysql/mysql.sock',
 		'encoding' => 'utf8',
 	);
 
-	public $test = array(
+/*	public $test = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
@@ -88,4 +87,6 @@ class DATABASE_CONFIG {
 		'prefix' => '',
 		//'encoding' => 'utf8',
 	);
+*/
+
 }

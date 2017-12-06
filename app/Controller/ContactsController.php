@@ -161,31 +161,50 @@ class ContactsController extends AppController {
 				$sender = $this->User->findById($this->Auth->user('id'));
 				$senderName = $sender['User']['username'];
 				$senderMail = $sender['User']['mail'];
-				
-				$EMail = new CakeEmail();
-// 				$EMail->from(array('Humboldt Cafeteria ['.$senderName.']'));
-				$EMail->to($validReceivers);
-				$EMail->subject($this->request->data['Mail']['subject']);
-				$EMail->config('web');
-				$EMail->template('default');
-				$EMail->replyTo($senderMail == '' ? 'noreply@example.com' : $senderMail);
-				$EMail->emailFormat('html');
-				$EMail->viewVars(array(
-						'senderName' => $senderName,
-						'senderMail' => ($senderMail == '') ? 'keine E-Mail angegeben' : $senderMail,
-						'content' => $this->request->data['Mail']['content'],
-						'subject' => $this->request->data['Mail']['subject'],
-						'allowReply' => true
-						));
-				if ($EMail->send()) {
-					$this->Session->setFlash('Die E-Mail wurde erfolgreich abgeschickt.','alert-box',array('class' => 'alert alert-success'));
-					$this->redirect(array('action' => 'index'));
-				} else {
-					$this->Session->setFlash('Es ist ein Fehler aufgetreten.','alert-box',array('class' => 'alert-error'));
+								
+				$errorReceivers = array();
+				foreach ($validReceivers as $receiver) {
+					$EMail = new CakeEmail();
+                    // $EMail->from(array('Humboldt Cafeteria ['.$senderName.']'));
+
+					try
+					{
+						$EMail->to($receiver);		
+						$EMail->subject($this->request->data['Mail']['subject']);
+						$EMail->config('shuttle');
+						$EMail->template('default');
+						$EMail->replyTo($senderMail == '' ? 'noreply@example.com' : $senderMail);
+						$EMail->emailFormat('html');
+						$EMail->viewVars(array(
+								'senderName' => $senderName,
+								'senderMail' => ($senderMail == '') ? 'keine E-Mail angegeben' : $senderMail,
+								'content' => $this->request->data['Mail']['content'],
+								'subject' => $this->request->data['Mail']['subject'],
+								'allowReply' => true
+								));
+		   
+						if ($EMail->send()) {
+							$this->Session->setFlash('Die E-Mail wurde erfolgreich abgeschickt.<br /><br />Absender: '.$senderMail.' (Benutzername: '.$senderName.')','alert-box',array('class' => 'alert alert-success'));
+							$this->redirect(array('action' => 'index'));
+						} else {
+							$this->Session->setFlash('Es ist ein Fehler aufgetreten.<br /><br /><Absender: '.$senderMail.' (Benutzername: '.$senderName.')','alert-box',array('class' => 'alert-error'));
+						}
+					}
+					catch(SocketException $e)
+					{
+						array_push($errorReceivers, array("empfaenger" => $receiver,"fehler" => $e->getMessage()));
+					}
 				}
-				
+				if(!empty($errorReceivers)) {
+				    $errorReceiversString = "";
+				    foreach($errorReceivers as $er) {
+                        $errorReceiversString .= $er["empfaenger"].' ('.$er["fehler"].')';    
+				    }
+					//$errorReceiversString = implode(", ",$errorReceivers);
+					$this->Session->setFlash('Beim Senden an folgenden Empfänger ist ein Fehler aufgetreten:<br /><br />'.$errorReceiversString.'<br /><br />Absender: '.$senderMail.' (Benutzername: '.$senderName.')', 'alert-box', array('class' => 'alert-error'));
+				}
 			} else {
-				//Gebe in einer Fehlermeldung aus, welche Adressen/Benutzernamen fehlerhaft sind
+				//Gib in einer Fehlermeldung aus, welche Adressen/Benutzernamen fehlerhaft sind
 				$invalidData = implode(',', $invalidData);
 				$string =  "Die Nachricht konnte nicht gesendet werden, da folgende Empfänger keine Mitarbeiter der Cafeteria sind: " . $invalidData;
 				$this->Session->setFlash($string, 'alert-box', array('class' => 'alert alert-block alert-error'));

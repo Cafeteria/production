@@ -20,8 +20,12 @@ class SpecialdatesController extends AppController {
 	public function importVacations() {
 	  try {
 		$importyear = date('Y')+1;
-		$sourceURL = 'http://www.schulferien.org/iCal/Ferien/icals/Ferien_Berlin_'.$importyear.'.ics';
-			
+		//$sourceURL = 'http://www.schulferien.org/iCal/Ferien/icals/Ferien_Berlin_'.$importyear.'.ics';
+		//$sourceURL = 'http://www.schulferien.org/media/ical/deutschland/ferien_berlin_'.$importyear.'.ics';
+		$downloadkey = 'ybcJG7nmJxoSMqrq02EB8pkWhWgvU142L4ShS9TAyzQ7CRqvHNUph6E18L_6ke6Lb-GA9sa5Pe63cB1eeNgnZ4UrevRFabbyHSoeHzY8iMw';
+		$sourceURL = 'http://www.schulferien.org/media/ical/deutschland/ferien_berlin_'.$importyear.'.ics?k='.$downloadkey;
+		
+		
 		$icalreader = new ICal($sourceURL);
 
 		

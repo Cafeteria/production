@@ -98,7 +98,7 @@ public $paginate = array(
 					$EMail = new CakeEmail();
 					$EMail->to($this->request->data['User']['mail']);
 					$EMail->subject("Registrierung für den Cafeplaner der Humboldt-Oberschule");
-					$EMail->config('web');
+					$EMail->config('shuttle');
 					$EMail->template('default');
 					$EMail->emailFormat('html');
 					$EMail->viewVars(array(

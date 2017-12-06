@@ -1,4 +1,5 @@
 <?php
+
 App::uses('AppController', 'Controller');
 /**
  * Zu der Website gehören unter anderem auch einige automatisch ausgeführte Skripte.

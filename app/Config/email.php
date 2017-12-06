@@ -39,14 +39,14 @@
  */
 class EmailConfig {
 
-	public $default = array(
+/*	public $default = array(
 		'transport' => 'Debug',
 		'from' => 'you@localhost',
 		'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
-	);
-
-	public $smtp = array(
+	);*/
+	
+/*	public $smtp = array(
 		'transport' => 'Smtp',
 		'from' => array('site@localhost' => 'My Site'),
 		'host' => 'localhost',
@@ -58,20 +58,28 @@ class EmailConfig {
 		'log' => false,
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
-	);
+	);*/
 	
-	public $web = array(
+	public $shuttle = array(
 		'transport' => 'Smtp',
-		'from' => array('cafeteriaprojekt@web.de' => 'Humboldt Cafeteria'),
-		'host' => 'smtp.web.de',
+		'from' => array('cafeteria-humboldtschule@web.de' => 'Humboldt Cafeteria'),
+//		'from' => array('cafeteriaderhumboldtschule@web.de' => 'Humboldt Cafeteria'),
+//		'host' => 'smtp.web.de',
+		'host' => 'mail.shuttle.de',
 		'port' => 587,
-		'username' => 'cafeteriaprojekt@web.de',
-		'password' => 'apfelkuchen0',
-		'replyTo' => 'cafeteria-automail@versanet.de',
+//		'port' => 25,
+//		'port' => 465,
+//		'username' => 'cafeteriaprojekt@web.de',
+		'username' => 'bk1000p113',
+//		'password' => 'apfelkuchen0',
+		'password' => 'J4nzk03stl1ch',
+		'replyTo' => 'cafeteria-humboldtschule@web.de',
+//		'replyTo' => 'cafeteriaderhumboldtschule@web.de',
+//		'tls' => true
 		'tls' => true
 	);
 
-	public $fast = array(
+/*	public $fast = array(
 		'from' => 'you@localhost',
 		'sender' => null,
 		'to' => null,
@@ -100,6 +108,6 @@ class EmailConfig {
 		'log' => true,
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
-	);
+	);*/
 
 }

@@ -325,7 +325,7 @@ class PlanController extends AppController {
 		
 		$receivingUsers = $this->User->find('all', array('recursive' => -1, 'conditions' => $conditionArray));
 		
-		$senderMail = 'humboldt-cafeteria@versanet.de';
+		$senderMail = 'cafeteria-humboldtschule@web.de';
 		$senderName = 'Humboldt Cafeteria';
 		$mailContent = "Hallo,<br />
 				leider ist die ".$shiftname." für ".strftime('%A', strtotime($date)).", den ".date('d.m.Y', strtotime($date)).", kurzfristig frei geworden.
@@ -338,7 +338,7 @@ class PlanController extends AppController {
 		$EMail = new CakeEmail();
 		$EMail->from(array($senderMail => $senderName));
 		$EMail->subject("Humboldt-Cafeteria - Dienst kurzfristig frei geworden");
-		$EMail->config('web');
+		$EMail->config('shuttle');
 		$EMail->template('default');
 		$EMail->emailFormat('html');
 		$EMail->viewVars(array(
@@ -748,10 +748,12 @@ class PlanController extends AppController {
 	 * @return void
 	 */
 	public function sendMissingShiftMails(){
+		$this->response = new CakeResponse();
 	  try {
 		$firstDate = new DateTime('now');
 		$firstDate = $firstDate->modify("+".(8-date('N', time()))." days");
 		$tmpColumns = $this->Column->find('all', array('recursive' => -1));
+
 		$columns = array();
 		foreach ($tmpColumns as $tmpColumn) {
 			$columns[$tmpColumn['Column']['id']] = $tmpColumn['Column']['req_admin'];
@@ -773,7 +775,7 @@ class PlanController extends AppController {
 		}
 		
 		$users = $this->User->find("all", array("recursive" => -1, "conditions" => array("User.mail != " => "", "User.leave_date" => null, 'User.admin != ' => 2)));
-		
+
 		$workableUsers = array();
 
 		foreach ($data as $date => $info) {
@@ -828,6 +830,9 @@ class PlanController extends AppController {
 							$workableUsers[$user['User']['id']][$date][$columnId] = 1;
 						}
 					}
+
+                    // immer eine Mail an Herrn Wagner senden
+                    if($user['User']['id']==148) $workableUsers[$user['User']['id']][$date][$columnId] = 1;
 				}
 			}
 		}
@@ -852,9 +857,11 @@ class PlanController extends AppController {
 		}
 		
 
-		$senderMail = 'humboldt-cafeteria@versanet.de';
+		$senderMail = 'cafeteria-humboldtschule@web.de';
 		$senderName = 'Humboldt Cafeteria';
 		
+        Debugger::log($workableUsers);
+
 		foreach ($workableUsers as $userid => $dates) {			
 			$mailContent = "Hallo ".$usersArray[$userid]['fname']." ".$usersArray[$userid]['lname'].",<br />";
 			$mailContent .= "leider sind zur Zeit noch nicht alle Dienste für die nächste Woche in der Humboldt-Cafeteria belegt.<br /><br />Es fehlen:<br />";
@@ -874,7 +881,7 @@ class PlanController extends AppController {
 			$EMail->from(array($senderMail => $senderName));
 			$EMail->to($usersArray[$userid]['mail']);
 			$EMail->subject("Humboldt-Cafeteria - nächste Woche unvollständig");
-			$EMail->config('web');
+			$EMail->config('shuttle');
 			$EMail->template('default');
 			$EMail->emailFormat('html');
 			$EMail->viewVars(array(
@@ -884,8 +891,9 @@ class PlanController extends AppController {
 					'subject' => "Humboldt-Cafeteria - nächste Woche unvollständig",
 					'allowReply' => false
 			));
-
-			$EMail->send();
+            
+            Debugger::log($EMail);
+			Debugger::log($EMail->send());
 		}
 		
 		AutoController::saveLog('Plan-unvollständig-Mail', 0, 'PlanController', 'sendMissingShiftMails');

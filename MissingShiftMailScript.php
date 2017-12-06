@@ -54,6 +54,7 @@ echo "\nincluding AutoController ...";
 require_once 'app/Controller/AutoController.php';
 echo "\ncreating AutoController ...";
 $autoController = new AutoController();
+$autoController->response = new CakeResponse();
 echo "\nsending mails ...\n";
 $autoController->index('PlanController', 'sendMissingShiftMails', 'Plan-unvollständig-Mail');
 exit;

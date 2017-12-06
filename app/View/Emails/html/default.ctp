@@ -26,7 +26,8 @@
   </tr>
   <tr>
   	<td>Betreff:</td>
-  	<td><?php echo $subject;?>
+  	<td><?php echo $subject;?></td>
+  </tr>
 </table>
 <br>
 <?php 
